@@ -1,0 +1,22 @@
+{
+  "name": "reconstitution",
+  "version": "1.0.0",
+  "description": "Tools and information for merging large numbers of file backups",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dwighthouse/reconstitution.git"
+  },
+  "author": "Dwight House",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dwighthouse/reconstitution/issues"
+  },
+  "homepage": "https://github.com/dwighthouse/reconstitution#readme",
+  "devDependencies": {
+    "lodash": "4.17.5"
+  }
+}
