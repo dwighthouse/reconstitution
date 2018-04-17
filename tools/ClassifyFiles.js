@@ -19,7 +19,9 @@ const isEmptyLine = (line) => {
 
 const breakUpLine = (line) => {
     return _.map(line.split('\t'), (part) => {
-        return part.replace(/^"(.+?)"$/, '$1');
+        return part.replace(/^"(.+?)"$/, '$1')
+            .replace(/\\"/g, '"') // Remove slash-quotes added by git
+            .replace(/\/Icon\\r$/, '/Icon^M'); // Rename weird \r issue with ? which is the actual value of the filename
     });
 };
 

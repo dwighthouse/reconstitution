@@ -34,12 +34,14 @@ const command = spawn('diff', [
 
 command.stdout.setEncoding('utf8');
 
-command.stdout.on('data', (data) => {
-    // Remove all empty lines
-    const lines = _.compact(_.reject(data.split(/\r?\n/), isEmptyLine));
-    console.log(JSON.stringify(lines, null, '    '));
+let streamData = '';
+
+child.stdout.on('data', (data) => {
+    streamData += data.toString();
 });
 
-command.stderr.on('data', (data) => {
-    console.log(`Something didn't work: ${data}`);
+command.on('exit', () => {
+    // Remove all empty lines
+    const lines = _.compact(_.reject(streamData.split(/\r?\n/), isEmptyLine));
+    console.log(JSON.stringify(lines, null, '    '));
 });

@@ -18,6 +18,15 @@ const backupBasePath = process.argv[3];
 // '/Users/dash/Desktop/Reconstitution/copies/changes'
 const copyBasePath = process.argv[4];
 
+
+
+const getDirectoryName = (filePath) => {
+    // Get all but the last part (this prevents the creation of folders for items that are actually just files with no extension)
+    return filePath.split('/').slice(0, -1).join('/');
+};
+
+
+
 fs.readFile(classifiedFilesPath, { encoding: 'utf8' }, (e, data) => {
     if (e) {
         console.log('Error reading file. Did you give an invalid path or a directory?');
@@ -32,10 +41,7 @@ fs.readFile(classifiedFilesPath, { encoding: 'utf8' }, (e, data) => {
     const filesToCopy = _.map(_.flatten(_.values(sets)), 1).sort();
 
     // Find unique paths necessary to copy those files
-    const directoriesToMake = _.uniq(_.map(filesToCopy, (filePath) => {
-        // Get all but the last part (this prevents the creation of folders for items that are actually just files with no extension)
-        return filePath.split('/').slice(0, -1).join('/');
-    }));
+    const directoriesToMake = _.uniq(_.map(filesToCopy, getDirectoryName));
 
     const commands = [];
 
@@ -44,7 +50,7 @@ fs.readFile(classifiedFilesPath, { encoding: 'utf8' }, (e, data) => {
     });
 
     _.each(filesToCopy, (filePath) => {
-        commands.push(['cp', [filePath, filePath.replace(backupBasePath, copyBasePath)]]);
+        commands.push(['cp', ['-pPR', filePath, getDirectoryName(filePath.replace(backupBasePath, copyBasePath))]]);
     });
 
     // Print out object

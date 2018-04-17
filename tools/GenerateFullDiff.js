@@ -16,7 +16,7 @@ const newerBackupBasePath = process.argv[3];
 
 
 
-const command = spawn('git', [
+const child = spawn('git', [
     'diff',
     '--no-index',
     '--name-status',
@@ -24,12 +24,14 @@ const command = spawn('git', [
     newerBackupBasePath,
 ]);
 
-command.stdout.setEncoding('utf8');
+child.stdout.setEncoding('utf8');
 
-command.stdout.on('data', (data) => {
-    console.log(data);
+let streamData = '';
+
+child.stdout.on('data', (data) => {
+    streamData += data.toString();
 });
 
-command.stderr.on('data', (data) => {
-    console.log(`Something didn't work: ${data}`);
+child.on('exit', () => {
+    console.log(streamData);
 });

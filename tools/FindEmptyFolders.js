@@ -21,7 +21,7 @@ const isEmptyLine = (line) => {
 
 
 
-const command = spawn('find', [
+const child = spawn('find', [
     olderBackupBasePath,
     '-depth',
     '-type',
@@ -29,14 +29,16 @@ const command = spawn('find', [
     '-empty',
 ]);
 
-command.stdout.setEncoding('utf8');
+child.stdout.setEncoding('utf8');
 
-command.stdout.on('data', (data) => {
-    // Remove all empty lines
-    const lines = _.compact(_.reject(data.split(/\r?\n/), isEmptyLine));
-    console.log(JSON.stringify(lines, null, '    '));
+let streamData = '';
+
+child.stdout.on('data', (data) => {
+    streamData += data.toString();
 });
 
-command.stderr.on('data', (data) => {
-    console.log(`Something didn't work: ${data}`);
+child.on('exit', () => {
+    // Remove all empty lines
+    const lines = _.compact(_.reject(streamData.split(/\r?\n/), isEmptyLine));
+    console.log(JSON.stringify(lines, null, '    '));
 });

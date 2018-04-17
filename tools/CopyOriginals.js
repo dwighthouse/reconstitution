@@ -19,21 +19,30 @@ let commandList = [];
 
 const doCommand = () => {
     const op = commandList[commandIndex][0];
-    const params = commandList[commandIndex][1];
+    const params = _.map(commandList[commandIndex][1], (param) => {
+        // Handle the really weird case of resource fork icon files
+        if ((/Icon\^M$/).test(param)) {
+            return `${param.replace(/Icon\^M$/, 'Icon\r')}`
+        }
+        if (_.isString(param)) {
+            return param.replace(/\\"/g, '"'); // Ensure the Unix commands never encounter a slash-quote
+        }
+        return param;
+    });
 
-    const command = spawn(op, params);
+    const child = spawn(op, params);
 
-    command.stderr.on('data', (data) => {
+    child.stderr.on('data', (data) => {
         console.log(`Something didn't work: ${data}`);
     });
 
-    command.on('exit', (code) => {
+    child.on('exit', (code) => {
         commandIndex += 1;
 
         if (commandIndex < commandList.length) {
             setTimeout(() => {
                 doCommand();
-            }, 5);
+            }, 1);
         }
     });
 };
