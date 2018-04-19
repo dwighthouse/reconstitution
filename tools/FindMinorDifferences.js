@@ -22,7 +22,7 @@ const isEmptyLine = (line) => {
 
 
 
-const command = spawn('diff', [
+const child = spawn('diff', [
     '-x',
     '.DS_Store',
     '-x',
@@ -32,7 +32,7 @@ const command = spawn('diff', [
     backupBasePath2,
 ]);
 
-command.stdout.setEncoding('utf8');
+child.stdout.setEncoding('utf8');
 
 let streamData = '';
 
@@ -40,7 +40,7 @@ child.stdout.on('data', (data) => {
     streamData += data.toString();
 });
 
-command.on('exit', () => {
+child.on('exit', () => {
     // Remove all empty lines
     const lines = _.compact(_.reject(streamData.split(/\r?\n/), isEmptyLine));
     console.log(JSON.stringify(lines, null, '    '));
