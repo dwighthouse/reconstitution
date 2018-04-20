@@ -4,19 +4,22 @@
 const _ = require('lodash');
 const fs = require('fs');
 
-if (process.argv.length !== 5) {
-    console.log('Usage: node BuildCopyCommands.js [classified_files.json] [backupBasePath] [copyBasePath] > [commands.json]');
+if (process.argv.length !== 6) {
+    console.log('Usage: node BuildCopyCommands.js [classified_files.json] [backupBasePath] [copyBasePath] [commands.json]');
     process.exit(0);
     return;
 }
 
 const classifiedFilesPath = process.argv[2];
 
-// '/Users/dash/Desktop/Reconstitution/copies/Backup_1-16-08'
+// '../Backup_1-16-08'
 const backupBasePath = process.argv[3];
 
-// '/Users/dash/Desktop/Reconstitution/copies/changes'
+// '../changes'
 const copyBasePath = process.argv[4];
+
+// '../commands.json'
+const outputPath = process.argv[5];
 
 
 
@@ -53,7 +56,6 @@ fs.readFile(classifiedFilesPath, { encoding: 'utf8' }, (e, data) => {
         commands.push(['cp', ['-pPR', filePath, getDirectoryName(filePath.replace(backupBasePath, copyBasePath))]]);
     });
 
-    // Print out object
-    // Use > commands.json to convert to file
-    console.log(JSON.stringify(commands, null, '    '));
+    // Print out object to file
+    fs.writeFile(outputPath, JSON.stringify(commands, null, '    '));
 });

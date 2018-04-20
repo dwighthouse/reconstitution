@@ -5,13 +5,14 @@ const _ = require('lodash');
 const fs = require('fs');
 const { spawn } = require('child_process');
 
-if (process.argv.length !== 3) {
-    console.log('Usage: node FindEmptyFolders.js [olderBackupBasePath] > [empty_folders.json]');
+if (process.argv.length !== 4) {
+    console.log('Usage: node FindEmptyFolders.js [olderBackupBasePath] [empty_folders.json]');
     process.exit(0);
     return;
 }
 
 const olderBackupBasePath = process.argv[2];
+const outputPath = process.argv[3];
 
 
 
@@ -40,5 +41,5 @@ child.stdout.on('data', (data) => {
 child.on('exit', () => {
     // Remove all empty lines
     const lines = _.compact(_.reject(streamData.split(/\r?\n/), isEmptyLine));
-    console.log(JSON.stringify(lines, null, '    '));
+    fs.writeFile(outputPath, JSON.stringify(lines, null, '    '));
 });

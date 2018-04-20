@@ -3,13 +3,14 @@
 const _ = require('lodash');
 const fs = require('fs');
 
-if (process.argv.length !== 3) {
-    console.log('Usage: node ClassifyFiles.js [full_diff.txt] > [classified_files.json]');
+if (process.argv.length !== 4) {
+    console.log('Usage: node ClassifyFiles.js [full_diff.txt] [classified_files.json]');
     process.exit(0);
     return;
 }
 
 const diffPath = process.argv[2];
+const outputPath = process.argv[3];
 
 
 
@@ -127,5 +128,5 @@ fs.readFile(diffPath, { encoding: 'utf8' }, (e, data) => {
 
     // Print out object
     // Use > out.txt to convert to file
-    console.log(JSON.stringify(sets, null, '    '));
+    fs.writeFile(outputPath, JSON.stringify(sets, null, '    '));
 });

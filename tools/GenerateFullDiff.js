@@ -5,14 +5,15 @@ const _ = require('lodash');
 const fs = require('fs');
 const { spawn } = require('child_process');
 
-if (process.argv.length !== 4) {
-    console.log('Usage: node GenerateFullDiff.js [olderBackupBasePath] [newerBackupBasePath] > [full_diff.txt]');
+if (process.argv.length !== 5) {
+    console.log('Usage: node GenerateFullDiff.js [olderBackupBasePath] [newerBackupBasePath] [full_diff.txt]');
     process.exit(0);
     return;
 }
 
 const olderBackupBasePath = process.argv[2];
 const newerBackupBasePath = process.argv[3];
+const outputPath = process.argv[4];
 
 
 
@@ -33,5 +34,5 @@ child.stdout.on('data', (data) => {
 });
 
 child.on('exit', () => {
-    console.log(streamData);
+    fs.writeFile(outputPath, streamData);
 });
