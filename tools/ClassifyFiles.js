@@ -127,6 +127,8 @@ fs.readFile(diffPath, { encoding: 'utf8' }, (e, data) => {
     });
 
     // Print out object
-    // Use > out.txt to convert to file
-    fs.writeFile(outputPath, JSON.stringify(sets, null, '    '));
+    fs.writeFile(outputPath, JSON.stringify(sets, null, '    '), (e) => {
+        console.log('Failed to write output file.');
+        console.log(e);
+    });
 });

@@ -57,5 +57,8 @@ fs.readFile(classifiedFilesPath, { encoding: 'utf8' }, (e, data) => {
     });
 
     // Print out object to file
-    fs.writeFile(outputPath, JSON.stringify(commands, null, '    '));
+    fs.writeFile(outputPath, JSON.stringify(commands, null, '    '), (e) => {
+        console.log('Failed to write output file.');
+        console.log(e);
+    });
 });

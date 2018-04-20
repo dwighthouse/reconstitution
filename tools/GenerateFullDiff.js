@@ -34,5 +34,8 @@ child.stdout.on('data', (data) => {
 });
 
 child.on('exit', () => {
-    fs.writeFile(outputPath, streamData);
+    fs.writeFile(outputPath, JSON.stringify(streamData, null, '    '), (e) => {
+        console.log('Failed to write output file.');
+        console.log(e);
+    });
 });
