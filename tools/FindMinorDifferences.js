@@ -45,7 +45,9 @@ child.on('exit', () => {
     // Remove all empty lines
     const lines = _.compact(_.reject(streamData.split(/\r?\n/), isEmptyLine));
     fs.writeFile(outputPath, JSON.stringify(lines, null, '    '), (e) => {
-        console.log('Failed to write output file.');
-        console.log(e);
+        if (e) {
+            throw e;
+        }
+        console.log('Done.');
     });
 });
