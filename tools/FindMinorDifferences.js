@@ -3,6 +3,7 @@
 
 const _ = require('lodash');
 const fs = require('fs');
+const parseError = require('./parseError');
 const { spawn } = require('child_process');
 
 if (process.argv.length !== 5) {
@@ -39,6 +40,11 @@ let streamData = '';
 
 child.stdout.on('data', (data) => {
     streamData += data.toString();
+});
+
+child.stderr.on('data', (data) => {
+    // Render potential issues to console
+    console.log(parseError(data));
 });
 
 child.on('exit', () => {

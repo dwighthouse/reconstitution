@@ -8,6 +8,8 @@ Tools and information for merging large numbers of file backups
 [core]
     precomposeunicode = true
     quotePath = false
+    autocrlf = false
+    safecrlf = false
 [diff]
     renameLimit = 999999
 ```
