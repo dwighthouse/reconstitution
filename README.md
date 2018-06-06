@@ -34,6 +34,11 @@ Find all instances of empty folders, since sometimes I would use empty folder na
 find DIR -depth -type d -empty
 ```
 
+Recursively delete files starting with "._" and .DS_Store files
+```
+find . -type f -name ".DS_Store" -o -name "._*" -delete
+```
+
 Do a restartable folder transfer of the `dir1` directory into `dir2`
 ```
 rsync -vah --progress dir1/ dir2

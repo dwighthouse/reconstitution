@@ -57,5 +57,7 @@ fs.readFile(commandsFilePath, { encoding: 'utf8' }, (e, data) => {
 
     commandList = JSON.parse(data);
 
-    doCommand();
+    if (commandList.length !== 0) {
+        doCommand();
+    }
 });

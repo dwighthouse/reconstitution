@@ -7,7 +7,7 @@ const parseError = require('./parseError');
 const { spawn } = require('child_process');
 
 if (process.argv.length !== 5) {
-    console.log('Usage: node FindEmptyFolders.js [backupBasePath1] [backupBasePath2] [similar_backup_differences.json]');
+    console.log('Usage: node FindMinorFolders.js [backupBasePath1] [backupBasePath2] [similar_backup_differences.json]');
     process.exit(0);
     return;
 }
