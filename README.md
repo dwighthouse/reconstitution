@@ -43,3 +43,10 @@ Do a restartable folder transfer of the `dir1` directory into `dir2`
 ```
 rsync -vah --progress dir1/ dir2
 ```
+
+
+Convert files to 644 and folders to 755, recursively
+```
+find . -type f -perm 777 -exec chmod 644 {} \;
+find . -type d -perm 777 -exec chmod 755 {} \;
+```
